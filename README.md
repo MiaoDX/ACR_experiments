@@ -18,39 +18,15 @@ And some `Restful-API` for (somewhat) cleaner interaction with sensors and hardw
 
 [ACR (Active Camera Relocalization)](https://github.com/MiaoDX/ACR) is the most insteresting part and our truly contribution. 
 
-
-
-
-
-
-In this project, we provide:
-
-* one virtual environemnt build upon [unrealcv](https://github.com/unrealcv/unrealcv)
-* one use ZED camera for RGB+Depth images and our platform for motion moving
-
-The virtual one is a good example aiming at `proof-of-concept` and get you familiar with the concept and way of doing ACR, it is good for quantitative evaluation since the Camera pose can retreive from the Unreal Engine and are higly reliable. And moving camra in the virtaul environment is trival and precious. However, the precision is one double-edged sword, one the one hand, we can calculate the relative pose more preciously (especially when using Depth information) and move more accurately. On the other hand, the results and findings can not just apply into real world. Since in reality:
-
-* Depth images (measures) from sensors are less constant and precious
-* Motion moving with hardware are proven to have precision limitation
-
-
-
-
-
-
-
-``` vi
-```
-
-
-
+The HOWTOs are pretty clear in README of that project.
 
 ## (Various) BUILD
 
-NOTE, please change install path of all libraries (only openMVG here) into `C:\tools\cmake_install_libs`, since all my code on windows will have this path for libraries.
+NOTE, please change install path of all libraries (openMVG here) into `C:\tools\cmake_install_libs`, since all my C++ code with cmake on windows will refer to this path for libraries. And chances are that some libraries can not deal with both Release and Debug at the same directory, so we may need two install paths, one for Debug and one for Release. For example, the OpenMVG can have two install paths: `C:\tools\cmake_install_libs\openMVG\debug` and `C:\tools\cmake_install_libs\openMVG\release`.
+
+And if all you want is runing the example, the release mode is enough.
 
 ### Relative Pose Estimation (OpenMVG)
-
 
 First of all, install openMVG, the develop version
 
@@ -58,11 +34,15 @@ First of all, install openMVG, the develop version
 git clone https://github.com/openMVG/openMVG.git
 mv openMVG openMVG_develop
 cd openMVG_develop
+
+git submodule init
+git submodule update
+
 git checkout develop # note, we are using develop branch, at least for now
 
 # cmake and build
 
-... # install path
+... # install path please set to `C:\tools\cmake_install_libs\openMVG_DEVELOP\debug`
 
 ```
 
@@ -84,23 +64,27 @@ cd openMVG_Pose_Estimation
 
 ### Depth Camera (ZED only at present)
 
-We are using ZED with python 3, instrucions on how to please refer to [stereolabs/zed-python](https://github.com/stereolabs/zed-python). As usual, plese use `conda` virtual environments for this. And the ZED SDK will overwrite some path variables like `OpenCV_DIR` which can be a problem. So after install the SDK (and reboot as required), delete all the added variables (the new OpenCV_DIR, ), and combine them into one `bat` file, as [depth_camera/zed.bat](https://github.com/MiaoDX/depth_camera/blob/master/zed.bat).
+We are using ZED (**Version 2.1.2**) with python 3, instrucions on how to please refer [stereolabs/zed-python](https://github.com/stereolabs/zed-python). As usual, plese use `conda` virtual environments for this.
 
-All that said, each and eveytime we want to use ZED camera, we should `activate` the bat file first (just run it in command line window), and launch the applications from that command window, even the `pycharm` case.
+The ZED SDK will overwrite some path variables like `OpenCV_DIR` which can be a problem. ~~So after install the SDK (and reboot as required), delete all the added variables (the new OpenCV_DIR, ), and combine them into one `bat` file, as [depth_camera/zed.bat](https://github.com/MiaoDX/depth_camera/blob/master/zed.bat).
+
+All that said, each and eveytime we want to use ZED camera, we should `activate` the bat file first (just run it in command line window), and launch the applications from that command window, even the `pycharm` case.~~
 
 ``` vi
 # python libraries
 
 # conda way
 numpy
+cython
+flask # Restful API
 
-conda install -c menpo opencv3 # to avoid building opencv3 from scratch
+conda install -c menpo opencv3 # to avoid building opencv3 from scratch, contrib modules (like SIFT) not included
 
 # pip way
-
+unrealcv v0.3.9
 
 # build way
-zed python binding
+zed python binding, reboot will be necessary for using
 ```
 
 ``` vi
