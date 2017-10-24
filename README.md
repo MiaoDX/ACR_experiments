@@ -82,6 +82,7 @@ conda install -c menpo opencv3 # to avoid building opencv3 from scratch, contrib
 
 # pip way
 unrealcv v0.3.9
+json_tricks
 
 # build way
 zed python binding, reboot will be necessary for using
