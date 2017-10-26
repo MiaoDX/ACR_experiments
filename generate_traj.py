@@ -95,6 +95,8 @@ if __name__ == '__main__':
     # Experiments_DIR = ACR_DIR + '/ACR_UNREAL_EXPERIMENT/Experiment1_PnP_Aided_HAND/20171022_231944/'
 
     Experiments_DIR = os.path.join(ACR_DIR, 'ACR_UNREAL_EXPERIMENT_1024_14/Bisection/') #
+    # Experiments_DIR = os.path.join(ACR_DIR, 'ACR_UNREAL_EXPERIMENT/Experiment1_PnP_Aided_HAND/')  #
+
 
     import os
     for e_dir in os.listdir(Experiments_DIR):
@@ -107,4 +109,6 @@ if __name__ == '__main__':
         # eng.draw_traj_fun()
         json_file = 'result.json'
         eng.draw_traj_fun('json_file', json_file,'start', 15, 'show_num', 30, 'cameraSize', 0.05, 'coor_lim', 0.5, 'present_dir', e_dir)
+        # eng.draw_traj_fun('json_file', json_file, 'start', 1, 'show_num', 2, 'cameraSize', 0.2, 'coor_lim', 2,
+        #                   'present_dir', e_dir)
         eng.quit()
