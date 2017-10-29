@@ -81,7 +81,7 @@ flask # Restful API
 conda install -c menpo opencv3 # to avoid building opencv3 from scratch, contrib modules (like SIFT) not included
 
 # pip way
-unrealcv v0.3.9
+unrealcv ~~v0.3.9~~ v0.3.10
 json_tricks
 
 # build way

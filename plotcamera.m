@@ -42,7 +42,7 @@
 % June      2015 Changes to make compatible with new version of
 %                CAMERASTRUCT.
 
-function plotcamera(C, l, col, plotCamPath, fig)
+function plotcamera(C, l, col, plotCamPath, fig, is_ref, line_color)
 
     if ~exist('col', 'var')  || isempty(col)
         col = [0 0 1];
@@ -52,9 +52,14 @@ function plotcamera(C, l, col, plotCamPath, fig)
         plotCamPath = 0;
     end    
       
-    if exist('fig', 'var')    
+    if exist('fig', 'var') && ~isempty(fig)
         figure(fig)
     end
+    
+    if ~exist('is_ref', 'var')  || isempty(is_ref)
+        is_ref = 0;
+    end
+
     
     for i = 1:length(C)
         
@@ -73,9 +78,23 @@ function plotcamera(C, l, col, plotCamPath, fig)
         end    
         
         if i > 1 & plotCamPath
+            c1 = [145/255 44/255 238/255];
+            c2 = [0 178/255 238/255];
             line([C(i-1).P(1) C(i).P(1)],...
                  [C(i-1).P(2) C(i).P(2)],...
-                 [C(i-1).P(3) C(i).P(3)])
+                 [C(i-1).P(3) C(i).P(3)], 'LineWidth', 2, 'color', line_color)
+        end
+        
+        vis = C.Visible
+        if ~vis
+            %text(C(i).P(1), C(i).P(2), C(i).P(3), C(i).label, 'color', [1 0 0]);
+            
+            if is_ref
+                scatter3(C(i).P(1), C(i).P(2), C(i).P(3), '*', 'MarkerFaceColor', [178/255 34/255 34/255])
+            else
+                scatter3(C(i).P(1), C(i).P(2), C(i).P(3), 'o', 'MarkerFaceColor', [0 1 0])
+            end
+            continue
         end
         
         % Construct transform from camera coordinates to world coords
@@ -114,16 +133,16 @@ function plotcamera(C, l, col, plotCamPath, fig)
         Y = Tw_c(1:3,2)*l + C(i).P;    
         Z = Tw_c(1:3,3)*l + C(i).P;            
         
-        line([C(i).P(1), X(1,1)], [C(i).P(2), X(2,1)], [C(i).P(3), X(3,1)],...
-             'color', [0, 1, 1]);        
-        line([C(i).P(1), Y(1,1)], [C(i).P(2), Y(2,1)], [C(i).P(3), Y(3,1)],...
-             'color', [1, 0, 1]);        
+        %line([C(i).P(1), X(1,1)], [C(i).P(2), X(2,1)], [C(i).P(3), X(3,1)],...
+         %    'color', [1 193/255 37/255]);        
+        %line([C(i).P(1), Y(1,1)], [C(i).P(2), Y(2,1)], [C(i).P(3), Y(3,1)],...
+          %   'color', [1, 0, 1]);        
         %    line([C(i).P(1), Z(1,1)], [C(i).P(2), Z(2,1)], [C(i).P(3), Z(3,1)],...
         %         'color', col);        
         
         %text(X(1), X(2), X(3), 'X', 'color', col);        
         %text(Y(1), Y(2), Y(3), 'Y', 'color', col);        
-        text(X(1), X(2), X(3), C(i).label, 'color', [1, 0, 0]);        
+        text(X(1), X(2), X(3), C(i).label, 'color', line_color);        
         %text(Y(1), Y(2), Y(3), '', 'color', [0, 0, 1]);        
         
     end

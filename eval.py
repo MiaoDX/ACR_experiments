@@ -57,49 +57,11 @@ def six_dof_errors(json_file='result.json'):
 
     return errors, errors_rotation, errors_location, errors_6D
 
-def three_dof_two_errors(json_file='result.json'):
-    """
-    Two errors, rotation and translation with precious 3D (x, z and yaw)
-    """
-
-    with open(json_file, 'r') as f:
-        info = json_tricks.load(f)
-
-    ref_pose = np.array(info['im_ref_pose_6D']) # type: np.ndarray
-    start_pose = np.array(info['poses_6D'])[0] # type: np.ndarray
-
-    target_movement = ref_pose - start_pose
-
-    print("ref_pose:{}\n start_pose:{}\n target_movement:{}".format(ref_pose, start_pose, target_movement))
-
-    relative_poses = np.array(info['relative_poses'])
-
-    errors_yaw = []
-    errors_xz = []
-
-    relative_poses = np.insert(relative_poses, 0, np.zeros(6), axis=0) # for calc the init error
-
-    now_movement = np.zeros(6)
-    for move in relative_poses:
-
-        move[:3] = -move[:3] # note the minus, for translation
-        now_movement += move
-
-        errors_yaw.append(error_position(target_movement[4], now_movement[4]))
-        errors_xz.append(error_position([target_movement[0], target_movement[2]], [now_movement[0], now_movement[2]]))
-
-    errors_yaw = np.array(errors_yaw)
-    errors_xz = np.array(errors_xz)
 
 
-    print("errors_yaw:{}\nerrors_xz:{}".format(errors_yaw.T, errors_xz.T))
-
-    print('All num:{}, len(errors):{}'.format(info['num'], len((errors_yaw))))
-    print("All done")
 
 if __name__ == '__main__':
     # doctest.testmod(verbose=True)
     doctest.testmod()
 
     # six_dof_two_errors('result.json')
-    three_dof_two_errors('result.json')

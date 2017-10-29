@@ -6,6 +6,7 @@
 %
 
 %           label - The label of the camera. ('')
+%           Visible - Whether the camera is visable (true)
 
 %           fx - X focal length in pixel units. ([])
 %           fy - Y focal length in pixel units. ([])
@@ -82,6 +83,8 @@ function C = camstruct(varargin)
     
     % Define optional parameter-value pairs and their defaults    
     addParameter(p, 'label', '', @isstr);  
+    addParameter(p, 'Visible', true, @islogical);  
+   
     addParameter(p, 'PM',    [], @isnumeric);  
     addParameter(p, 'f',     [], @isnumeric);  
     addParameter(p, 'fx',    [], @isnumeric);  
@@ -103,6 +106,7 @@ function C = camstruct(varargin)
     parse(p, varargin{:});
     
     label = p.Results.label;
+    Visible = p.Results.Visible;
     
     PM  = p.Results.PM;    
     f   = p.Results.f;
@@ -122,6 +126,7 @@ function C = camstruct(varargin)
     P    = p.Results.P(:);
     Rc_w = p.Results.Rc_w;
     Tw_c = p.Results.Tw_c;
+    
     
     % Handle case when projection matrix is supplied
     if ~isempty(PM)
@@ -175,6 +180,7 @@ function C = camstruct(varargin)
     end
     
     C = struct('label',label, ...
+                'Visible', Visible, ...
                'fx', fx, 'fy', fy, ...
                'ppx', ppx, 'ppy', ppy, ...
                'k1', k1, 'k2', k2, 'k3', k3, ...
