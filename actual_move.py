@@ -105,7 +105,7 @@ def calc_AFD(Experiment_DIR, json_file='result.json', out_dir = 'AFD_output'):
     eng = get_matlab_eng()
     for file in files[:15]:
         file_no_suffix = os.path.basename(file)[:-4]
-        afd = eng.AFD_two_ims(Experiment_DIR, ref_file_no_suffix, file_no_suffix, out_dir)
+        afd = eng.AFD_two_ims_and_save_FDF(Experiment_DIR, ref_file_no_suffix, file_no_suffix, out_dir)
         AFDS.append(afd)
 
         file = Experiment_DIR+'/'+file_no_suffix+'.png'
