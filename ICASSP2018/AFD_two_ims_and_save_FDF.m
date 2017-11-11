@@ -1,6 +1,8 @@
-function [ AFD ] = AFD_two_ims( dir, ref_no_suffix, cur_no_suffix, out_dir )
+function [ AFD ] = AFD_two_ims_and_save_FDF( dir, ref_no_suffix, cur_no_suffix, out_dir )
 %UNTITLED4 此处显示有关此函数的摘要
 %   此处显示详细说明
+
+%run('C:\Code\miaodx\ACR_experiments\ICASSP2018\AFD\vlfeat-0.9.20\toolbox\vl_setup')
 
 %dir = 'F:\research&project\Our_Paper\PAMI2017_Camera6dRelocation\results\repairEvaluation\data\3\';
 ref = [ref_no_suffix '.png'];
