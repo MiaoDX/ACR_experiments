@@ -11,7 +11,8 @@ import numpy as np
 ACR_DIR = 'H:/projects/graduation_project_codebase/ACR/'
 sys.path.append(ACR_DIR)
 
-import utils.Rt_transfrom as Rt_transfrom
+# import utils.Rt_transfrom as Rt_transfrom
+import Rt_transfrom
 
 
 def get_matlab_eng():
